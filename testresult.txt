@@ -1,0 +1,2 @@
+baseline: 
+	./tests/open_tests/array_search_3.sl:
