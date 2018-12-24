@@ -48,7 +48,7 @@ def getaplist(constrain):
 def getBoolexpr(constrain):
     tmp = constrain[1][2][1]
     bexpr = [] 
-    
+
 def findIdx(bmExpr):
     prog = ""
     constrains_tmp = []
@@ -104,6 +104,28 @@ def findIdx(bmExpr):
             num_value_added = num_value_added + 1
     return prog
 
+def findMax(deflist):
+    prog = ""
+    paramlist = deflist[2]
+    tmp = deflist[2]
+    relation = "<="
+    for elm in paramlist:
+        ret = elm[0]
+        prog = prog + "(ite "
+        for r in tmp:
+            rel = r[0]
+            if r is not tmp[-1]:
+                prog = prog + "(and (" + relation + " " + rel + " " + ret + ")"
+            else:
+                prog = prog + "(" + relation + " " + rel + " " + ret + ")"
+        for i in range(len(paramlist)-1):
+            prog = prog + ")"
+        prog = prog + " " + ret + " " 
+    prog = prog + ret 
+    for p_idx in range(len(paramlist)):
+        prog = prog + ")"
+    return prog
+
 def generate(deflist,progstr):
     ret = ""
     headdef = deflist[0]
@@ -142,7 +164,11 @@ if __name__ == '__main__':
     #ret = generate(FuncDefine, findIdx(bmExpr))
     #print ret
     #print (checker.check(ret))
-    print (checker.check('(define-fun max2 ((x Int)) Int )'))
+    #print (checker.check('(define-fun max2 ((x Int) (y Int)) Int (ite (<= x y) y (ite (<= y x) x y)))')) # max2
+    #print (checker.check('(define-fun max3 ((x Int) (y Int) (z Int)) Int (ite (and (<= x x)(and (<= y x)(<= z x))) x (ite (and (<= x y)(and (<= y y)(<= z y))) y (ite (and (<= x z)(and (<= y z)(<= z z))) z z))))')) # max3
+    ret = generate(FuncDefine, findMax(FuncDefine))
+    print ret
+    print (checker.check(ret))
     exit()
     BfsQueue = [[StartSym]] #Top-down
     Productions = {StartSym:[]}
