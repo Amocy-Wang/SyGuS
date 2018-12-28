@@ -105,6 +105,7 @@ def findIdx(bmExpr):
     return prog
 
 def findMax(deflist):
+    # TODO: check whether it is max or min.
     prog = ""
     paramlist = deflist[2]
     tmp = deflist[2]
@@ -147,12 +148,6 @@ if __name__ == '__main__':
     print("bmExpr-------------------------------------")
     print(bmExpr)
     checker=translator.ReadQuery(bmExpr)
-    #print (checker.check('(define-fun findIdx ((y1 Int)(y2 Int)(k1 Int)) Int (ite (< k1 y1) 0 (ite (> k1 y2) 2 (ite (> k1 y1) (ite (< k1 y2) 1 0) 0))))')) # array_search_2
-    #print (checker.check('(define-fun findIdx ((y1 Int)(y2 Int)(y3 Int)(k1 Int)) Int (ite (< k1 y1) 0 (ite (> k1 y3) 3 (ite (> k1 y1) (ite (< k1 y2) 1(ite (> k1 y2) (ite (< k1 y3) 2 2) 2))2))))')) # array_search_3
-    #print (checker.check('(define-fun findIdx ((y1 Int)(y2 Int)(y3 Int)(y4 Int)(k1 Int)) Int (ite (< k1 y1) 0 (ite (> k1 y4) 4 (ite (> k1 y1) (ite (< k1 y2) 1(ite (> k1 y2) (ite (< k1 y3) 2(ite (> k1 y3) (ite (< k1 y4) 3 3) 3))3))3))))')) # array_search_4
-    #print (checker.check('(define-fun findIdx ((y1 Int)(y2 Int)(y3 Int)(y4 Int)(y5 Int)(y6 Int)(k1 Int)) Int (ite (< k1 y1) 0 (ite (> k1 y6) 6 (ite (> k1 y1) (ite (< k1 y2) 1(ite (> k1 y2) (ite (< k1 y3) 2(ite (> k1 y3) (ite (< k1 y4) 3(ite (> k1 y4) (ite (< k1 y5) 4(ite (> k1 y5) (ite (< k1 y6) 5 5) 5))5))5))5))5))))')) # array_search_6
-    #print (checker.check('(define-fun f ((x Int)) Int (mod (* x 3) 10)  )'))
-    #raw_input()
     SynFunExpr = []
     StartSym = 'My-Start-Symbol' #virtual starting symbol
     for expr in bmExpr:
@@ -161,15 +156,19 @@ if __name__ == '__main__':
         elif expr[0]=='synth-fun':
             SynFunExpr=expr
     FuncDefine = ['define-fun']+SynFunExpr[1:4] #copy function signature
-    #ret = generate(FuncDefine, findIdx(bmExpr))
-    #print ret
-    #print (checker.check(ret))
-    #print (checker.check('(define-fun max2 ((x Int) (y Int)) Int (ite (<= x y) y (ite (<= y x) x y)))')) # max2
-    #print (checker.check('(define-fun max3 ((x Int) (y Int) (z Int)) Int (ite (and (<= x x)(and (<= y x)(<= z x))) x (ite (and (<= x y)(and (<= y y)(<= z y))) y (ite (and (<= x z)(and (<= y z)(<= z z))) z z))))')) # max3
+    # deal with max function
     ret = generate(FuncDefine, findMax(FuncDefine))
-    print ret
-    print (checker.check(ret))
-    exit()
+    counterexample = checker.check(ret)
+    if (counterexample == None):
+        print ret
+        exit()
+    # deal with findIdx function
+    ret = generate(FuncDefine, findIdx(bmExpr))
+    counterexample = checker.check(ret)
+    if (counterexample == None):
+        print ret
+        exit()
+
     BfsQueue = [[StartSym]] #Top-down
     Productions = {StartSym:[]}
     Type = {StartSym:SynFunExpr[3]} # set starting symbol's return type
