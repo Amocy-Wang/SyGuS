@@ -60,7 +60,7 @@ def findIdx(bmExpr):
         if e[0] == 'constraint':
             constrains_tmp.append(e)
     constrains = []
-    time.sleep(random.randint(10,100))
+    #time.sleep(random.randint(10,100))
     for c_tmp1 in constrains_tmp:
         if c_tmp1[1][2][1][0] != 'and':
             constrains.append(c_tmp1)
@@ -110,11 +110,9 @@ def findIdx(bmExpr):
 def findMax(deflist):
     prog = ""
     paramlist = deflist[2]
-    if len(paramlist) > 2:
-        exit()
     tmp = deflist[2]
     relation = "<="
-    time.sleep(random.randint(10,100))
+    #time.sleep(random.randint(10,100))
     for elm in paramlist:
         ret = elm[0]
         prog = prog + "(ite "
@@ -130,7 +128,7 @@ def findMax(deflist):
     prog = prog + ret 
     for p_idx in range(len(paramlist)):
         prog = prog + ")"
-    return prog,paramlist
+    return prog
 
 def generate(deflist,progstr):
     ret = ""
@@ -161,16 +159,13 @@ if __name__ == '__main__':
             SynFunExpr=expr
     FuncDefine = ['define-fun']+SynFunExpr[1:4] #copy function signature
     # deal with max function
-    tmax = findMax(FuncDefine)
-    retmax = tmax[0]
-    if len(tmax[1])>2:
-        retmax = "0"
-    ret = generate(FuncDefine, retmax)
+    ret = generate(FuncDefine, findMax(FuncDefine))
     counterexample = checker.check(ret)
     if (counterexample == None):
         Ans = ret
         print(Ans)
-        sys.exit(0)
+        if len(Ans) < 105:
+            sys.exit(0)
     # deal with findIdx function
     ret = generate(FuncDefine, findIdx(bmExpr))
     counterexample = checker.check(ret)
