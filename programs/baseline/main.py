@@ -108,6 +108,8 @@ def findIdx(bmExpr):
 def findMax(deflist):
     prog = ""
     paramlist = deflist[2]
+    if len(paramlist) > 2:
+        exit()
     tmp = deflist[2]
     relation = "<="
     for elm in paramlist:
