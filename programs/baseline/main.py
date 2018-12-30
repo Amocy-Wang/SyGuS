@@ -145,8 +145,8 @@ if __name__ == '__main__':
     benchmarkFile = open(sys.argv[1])
     bm = stripComments(benchmarkFile)
     bmExpr = sexp.sexp.parseString(bm, parseAll=True).asList()[0] #Parse string to python list
-    print("bmExpr-------------------------------------")
-    print(bmExpr)
+#    print("bmExpr-------------------------------------")
+#    print(bmExpr)
     checker=translator.ReadQuery(bmExpr)
     SynFunExpr = []
     StartSym = 'My-Start-Symbol' #virtual starting symbol
@@ -173,7 +173,7 @@ if __name__ == '__main__':
     Productions = {StartSym:[]}
     Type = {StartSym:SynFunExpr[3]} # set starting symbol's return type
 
-    print("goto for statement ----------------------")
+#    print("goto for statement ----------------------")
     for NonTerm in SynFunExpr[4]: #SynFunExpr[4] is the production rules
         NTName = NonTerm[0]
         NTType = NonTerm[1]
@@ -187,7 +187,7 @@ if __name__ == '__main__':
                 Productions[NTName].append(str(NT[1])) # deal with ('Int',0). You can also utilize type information, but you will suffer from these tuples.
             else:
                 Productions[NTName].append(NT)
-    print("out for statement -----------------------")
+#    print("out for statement -----------------------")
     Count = 0
     while(len(BfsQueue)!=0):
         Curr = BfsQueue.pop(0)
@@ -199,7 +199,7 @@ if __name__ == '__main__':
             #SynFunResult = FuncDefine+Curr
             #Str = translator.toString(SynFunResult)
             Str = FuncDefineStr[:-1]+' '+ CurrStr+FuncDefineStr[-1] # insert Program just before the last bracket ')'
-            print Str
+#            print Str
             Count += 1
             # print (Count)
             # print (Str)
@@ -208,9 +208,9 @@ if __name__ == '__main__':
                 # print (Str)
                 #raw_input()
             #print '1'
-            print("check ----------------------------")
+#            print("check ----------------------------")
             counterexample = checker.check(Str)
-            print("check done ----------------------------")
+#            print("check done ----------------------------")
             #print counterexample
             if(counterexample == None): # No counter-example
                 Ans = Str
@@ -218,15 +218,15 @@ if __name__ == '__main__':
             #print '2'
         #raw_input()
         #BfsQueue+=TryExtend
-        print("append BfsQueue -------------------------")
+#        print("append BfsQueue -------------------------")
         TE_set = set()
         for TE in TryExtend:
             TE_str = str(TE)
             if not TE_str in TE_set:
-                print("append ",TE_str)
+#                print("append ",TE_str)
                 BfsQueue.append(TE)
                 TE_set.add(TE_str)
-        print("append BfsQueue done. Next Loop-------------------------")
+#        print("append BfsQueue done. Next Loop-------------------------")
 
     print(Ans)
 

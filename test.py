@@ -8,6 +8,7 @@ programdir = './programs/'
 testroot = './tests/'
 hiddentests = testroot + 'hidden_tests/'
 opentests = testroot + 'open_tests/'
+backup_open_tests = testroot + 'backup-open_tests/'
 
 class TimeoutError(Exception):  
 	pass  
@@ -65,7 +66,7 @@ def my_test(cmd,outputfile,testname,timeout=300):
 				outputfile.write('Wrong Answer(%f)\n' %(rtime))
 		
 if __name__ == '__main__':  
-	timeout = 300
+	timeout = 30
 	testresultfile = 'testresult.txt'
 	outfile = open(testresultfile,'w')
 	
@@ -76,7 +77,8 @@ if __name__ == '__main__':
 		cmd = ('python3.5 ' if '3.5' in studentname else 'python ')
 		i = i + 1
 		print i
-		for testgroup in [hiddentests,opentests]:
+		for testgroup in [backup_open_tests]:
+#		for testgroup in [hiddentests,opentests]:
 			for test in os.listdir(testgroup):
 				arg = testgroup + test
 				my_test(cmd+toexe+arg,outfile,arg,timeout)

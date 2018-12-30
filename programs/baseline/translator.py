@@ -1,6 +1,6 @@
 from z3 import *
 
-verbose=True
+verbose=False
 
 
 def DeclareVar(sort,name):
