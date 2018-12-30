@@ -21,7 +21,6 @@ def stripComments(bmFile):
 
 def run_command(cmd, timeout=60):  
 	is_linux = platform.system() == 'Linux'  
-	  
 	p = subprocess.Popen(cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid if is_linux else None)  
 	t_beginning = datetime.datetime.now()
 	seconds_passed = 0  
