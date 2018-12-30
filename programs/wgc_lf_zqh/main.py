@@ -2,6 +2,8 @@ import sys
 import sexp
 import pprint
 import translator
+import random
+import time
 
 def Extend(Stmts,Productions):
     ret = []
@@ -58,6 +60,7 @@ def findIdx(bmExpr):
         if e[0] == 'constraint':
             constrains_tmp.append(e)
     constrains = []
+    #time.sleep(random.randint(10,100))
     for c_tmp1 in constrains_tmp:
         if c_tmp1[1][2][1][0] != 'and':
             constrains.append(c_tmp1)
@@ -105,11 +108,11 @@ def findIdx(bmExpr):
     return prog
 
 def findMax(deflist):
-    # TODO: check whether it is max or min.
     prog = ""
     paramlist = deflist[2]
     tmp = deflist[2]
     relation = "<="
+    #time.sleep(random.randint(10,100))
     for elm in paramlist:
         ret = elm[0]
         prog = prog + "(ite "
@@ -142,11 +145,10 @@ def generate(deflist,progstr):
     return ret
 
 if __name__ == '__main__':
+    Ans = ""
     benchmarkFile = open(sys.argv[1])
     bm = stripComments(benchmarkFile)
     bmExpr = sexp.sexp.parseString(bm, parseAll=True).asList()[0] #Parse string to python list
-    print("bmExpr-------------------------------------")
-    print(bmExpr)
     checker=translator.ReadQuery(bmExpr)
     SynFunExpr = []
     StartSym = 'My-Start-Symbol' #virtual starting symbol
@@ -160,78 +162,50 @@ if __name__ == '__main__':
     ret = generate(FuncDefine, findMax(FuncDefine))
     counterexample = checker.check(ret)
     if (counterexample == None):
-        print ret
-        exit()
+        Ans = ret
+        print(Ans)
+        if len(Ans) < 105:
+            sys.exit(0)
     # deal with findIdx function
     ret = generate(FuncDefine, findIdx(bmExpr))
     counterexample = checker.check(ret)
     if (counterexample == None):
-        print ret
-        exit()
-
+        Ans = ret
+        print(Ans)
+        sys.exit(0)
     BfsQueue = [[StartSym]] #Top-down
     Productions = {StartSym:[]}
     Type = {StartSym:SynFunExpr[3]} # set starting symbol's return type
 
-    print("goto for statement ----------------------")
     for NonTerm in SynFunExpr[4]: #SynFunExpr[4] is the production rules
         NTName = NonTerm[0]
         NTType = NonTerm[1]
         if NTType == Type[StartSym]:
             Productions[StartSym].append(NTName)
         Type[NTName] = NTType;
-        #Productions[NTName] = NonTerm[2]
         Productions[NTName] = []
         for NT in NonTerm[2]:
             if type(NT) == tuple:
                 Productions[NTName].append(str(NT[1])) # deal with ('Int',0). You can also utilize type information, but you will suffer from these tuples.
             else:
                 Productions[NTName].append(NT)
-    print("out for statement -----------------------")
     Count = 0
     while(len(BfsQueue)!=0):
         Curr = BfsQueue.pop(0)
-        #print("Extending "+str(Curr))
         TryExtend = Extend(Curr,Productions)
         if(len(TryExtend)==0): # Nothing to extend
             FuncDefineStr = translator.toString(FuncDefine,ForceBracket = True) # use Force Bracket = True on function definition. MAGIC CODE. DO NOT MODIFY THE ARGUMENT ForceBracket = True.
             CurrStr = translator.toString(Curr)
-            #SynFunResult = FuncDefine+Curr
-            #Str = translator.toString(SynFunResult)
             Str = FuncDefineStr[:-1]+' '+ CurrStr+FuncDefineStr[-1] # insert Program just before the last bracket ')'
-            print Str
             Count += 1
-            # print (Count)
-            # print (Str)
-            # if Count % 100 == 1:
-                # print (Count)
-                # print (Str)
-                #raw_input()
-            #print '1'
-            print("check ----------------------------")
             counterexample = checker.check(Str)
-            print("check done ----------------------------")
-            #print counterexample
             if(counterexample == None): # No counter-example
                 Ans = Str
                 break
-            #print '2'
-        #raw_input()
-        #BfsQueue+=TryExtend
-        print("append BfsQueue -------------------------")
         TE_set = set()
         for TE in TryExtend:
             TE_str = str(TE)
             if not TE_str in TE_set:
-                print("append ",TE_str)
                 BfsQueue.append(TE)
                 TE_set.add(TE_str)
-        print("append BfsQueue done. Next Loop-------------------------")
-
     print(Ans)
-
-	# Examples of counter-examples    
-	# print (checker.check('(define-fun max2 ((x Int) (y Int)) Int 0)'))
-    # print (checker.check('(define-fun max2 ((x Int) (y Int)) Int x)'))
-    # print (checker.check('(define-fun max2 ((x Int) (y Int)) Int (+ x y))'))
-    # print (checker.check('(define-fun max2 ((x Int) (y Int)) Int (ite (<= x y) y x))'))
