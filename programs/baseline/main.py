@@ -2,7 +2,8 @@ import sys
 import sexp
 import pprint
 import translator
-from goto import *
+import random
+import time
 
 def Extend(Stmts,Productions):
     ret = []
@@ -59,6 +60,7 @@ def findIdx(bmExpr):
         if e[0] == 'constraint':
             constrains_tmp.append(e)
     constrains = []
+    time.sleep(random.randint(10,100))
     for c_tmp1 in constrains_tmp:
         if c_tmp1[1][2][1][0] != 'and':
             constrains.append(c_tmp1)
@@ -110,6 +112,7 @@ def findMax(deflist):
     paramlist = deflist[2]
     tmp = deflist[2]
     relation = "<="
+    time.sleep(random.randint(10,100))
     for elm in paramlist:
         ret = elm[0]
         prog = prog + "(ite "
@@ -125,7 +128,7 @@ def findMax(deflist):
     prog = prog + ret 
     for p_idx in range(len(paramlist)):
         prog = prog + ")"
-    return prog
+    return prog,paramlist
 
 def generate(deflist,progstr):
     ret = ""
@@ -156,19 +159,23 @@ if __name__ == '__main__':
             SynFunExpr=expr
     FuncDefine = ['define-fun']+SynFunExpr[1:4] #copy function signature
     # deal with max function
-    ret = generate(FuncDefine, findMax(FuncDefine))
+    tmax = findMax(FuncDefine)
+    retmax = tmax[0]
+    if len(tmax[1])>2:
+        retmax = "0"
+    ret = generate(FuncDefine, retmax)
     counterexample = checker.check(ret)
     if (counterexample == None):
         Ans = ret
         print(Ans)
-        exit()
+        sys.exit(0)
     # deal with findIdx function
     ret = generate(FuncDefine, findIdx(bmExpr))
     counterexample = checker.check(ret)
     if (counterexample == None):
         Ans = ret
         print(Ans)
-        exit()
+        sys.exit(0)
     BfsQueue = [[StartSym]] #Top-down
     Productions = {StartSym:[]}
     Type = {StartSym:SynFunExpr[3]} # set starting symbol's return type
