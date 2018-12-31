@@ -1,0 +1,52 @@
+baseline: 
+	./tests/open_tests/array_search_13.sl:timeout after 1 
+	./tests/open_tests/array_search_6.sl:timeout after 1 
+	./tests/open_tests/array_search_10.sl:timeout after 1 
+	./tests/open_tests/array_search_11.sl:timeout after 1 
+	./tests/open_tests/array_search_12.sl:timeout after 1 
+	./tests/open_tests/max14.sl:timeout after 1 
+	./tests/open_tests/array_search_3.sl:timeout after 1 
+	./tests/open_tests/max8.sl:timeout after 1 
+	./tests/open_tests/array_search_15.sl:timeout after 1 
+	./tests/open_tests/s1.sl:timeout after 1 
+	./tests/open_tests/three.sl:timeout after 1 
+	./tests/open_tests/array_search_8.sl:timeout after 1 
+	./tests/open_tests/max6.sl:timeout after 1 
+	./tests/open_tests/max4.sl:timeout after 1 
+	./tests/open_tests/array_search_7.sl:timeout after 1 
+	./tests/open_tests/max_11.sl:timeout after 1 
+	./tests/open_tests/max15.sl:timeout after 1 
+	./tests/open_tests/array_search_9.sl:timeout after 1 
+	./tests/open_tests/max2.sl:timeout after 1 
+	./tests/open_tests/s3.sl:Invalid format(0.207202)
+	./tests/open_tests/max7.sl:timeout after 1 
+	./tests/open_tests/max3.sl:timeout after 1 
+	./tests/open_tests/max10.sl:timeout after 1 
+	./tests/open_tests/array_search_4.sl:timeout after 1 
+	./tests/open_tests/array_search_2.sl:timeout after 1 
+	./tests/open_tests/max13.sl:timeout after 1 
+	./tests/open_tests/array_search_14.sl:timeout after 1 
+	./tests/open_tests/tutorial.sl:timeout after 1 
+	./tests/open_tests/array_search_5.sl:timeout after 1 
+	./tests/open_tests/max9.sl:timeout after 1 
+	./tests/open_tests/max12.sl:timeout after 1 
+	./tests/open_tests/s2.sl:Invalid format(0.227919)
+	./tests/open_tests/max5.sl:timeout after 1 
+wrongformat: 
+	./tests/open_tests/array_search_13.sl:Invalid format(0.020568)
+	./tests/open_tests/array_search_6.sl:Invalid format(0.010546)
+	./tests/open_tests/array_search_10.sl:Invalid format(0.010148)
+	./tests/open_tests/array_search_11.sl:Invalid format(0.021638)
+	./tests/open_tests/array_search_12.sl:Invalid format(0.010790)
+	./tests/open_tests/max14.sl:Invalid format(0.010307)
+	./tests/open_tests/array_search_3.sl:Invalid format(0.010474)
+	./tests/open_tests/max8.sl:Invalid format(0.010741)
+	./tests/open_tests/array_search_15.sl:Invalid format(0.010723)
+	./tests/open_tests/s1.sl:Invalid format(0.010752)
+	./tests/open_tests/three.sl:Invalid format(0.010245)
+	./tests/open_tests/array_search_8.sl:Invalid format(0.010266)
+	./tests/open_tests/max6.sl:Invalid format(0.011015)
+	./tests/open_tests/max4.sl:Invalid format(0.021308)
+	./tests/open_tests/array_search_7.sl:Invalid format(0.010357)
+	./tests/open_tests/max_11.sl:Invalid format(0.021273)
+	./tests/open_tests/max15.sl:
