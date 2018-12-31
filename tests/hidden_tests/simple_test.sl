@@ -8,8 +8,7 @@
                  1
                  2
                  3
-                 (* Start Start)
-                 (mod Start Start)))))
+                 (* Start Start)))))
 
 (declare-var x Int)
 
