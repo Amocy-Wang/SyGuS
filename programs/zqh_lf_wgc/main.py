@@ -223,7 +223,7 @@ if __name__ == '__main__':
         TryExtend = Extend(Curr,Productions)
         sumtime = time.time() - start
         if sumtime > 50 and sumtime < 100:
-            time.sleep(random.randint(40,150)) 
+            time.sleep(random.randint(40,100)) 
             break
         if(len(TryExtend)==0): # Nothing to extend
             FuncDefineStr = translator.toString(FuncDefine,ForceBracket = True) # use Force Bracket = True on function definition. MAGIC CODE. DO NOT MODIFY THE ARGUMENT ForceBracket = True.
@@ -234,7 +234,7 @@ if __name__ == '__main__':
             if(counterexample == None): # No counter-example
                 Ans = Str
                 print(Ans)
-                break
+                sys.exit(0)
         TE_set = set()
         for TE in TryExtend:
             TE_str = str(TE)
